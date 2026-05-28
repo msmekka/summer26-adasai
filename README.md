@@ -8,6 +8,8 @@ This repo is intended to be used alongside the Yahboom-provided Raspberry Pi ima
 
 ```
 lab/              Python motor library and lab notebooks
+  01_hardware/    GPIO, motors, and pan-tilt labs
+  02_vision/      Camera and computer-vision labs
 mypython/         Standalone Python scripts for hardware testing
 mySmartCar/       C programs (wiringPi) from the Yahboom G1 kit
 ```
@@ -40,6 +42,9 @@ Guided Jupyter labs covering:
 - `01_led_control.ipynb` — GPIO LED control
 - `02_motor_control.ipynb` — Motor control using `motors.py`
 - `03_pantilt_control.ipynb` — Pan-tilt servo control
+
+### `02_vision/` notebooks
+- `04_camera_basics.ipynb` — Introduction to camera perception for ADAS. Covers opening a camera with OpenCV, inspecting individual pixel BGR values, streaming a live feed with an FPS counter, and comparing color spaces (BGR, HSV, grayscale). Includes guided "Tweak Zone" experiments and an advanced challenge to locate the brightest pixel in a frame.
 
 ---
 
