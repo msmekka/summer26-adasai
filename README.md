@@ -4,6 +4,27 @@ Teaching AI for ADAS/AD using the Yahboom G1 Tank on a Raspberry Pi.
 
 This repo is intended to be used alongside the Yahboom-provided Raspberry Pi image and software. See the official Yahboom G1 Tank resource page for the image, original software, and documentation: https://www.yahboom.net/study/G1-T-PI
 
+```
+              ┌──────[camera]──────┐
+              │     pan / tilt     │
+┌─────────────┴────────────────────┴─────────────┐
+│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│
+│▓ ┌─────────────────────────────────────────┐  ▓│
+│▓ │             Raspberry Pi                │  ▓│
+│▓ │  ┌────────────┐     ┌────────────┐      │  ▓│
+│▓ │  │  motor L   │     │  motor R   │      │  ▓│
+│▓ │  └────────────┘     └────────────┘      │  ▓│
+│▓ └─────────────────────────────────────────┘  ▓│
+│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│
+└──────────────┬──────────────────┬──────────────┘
+               │    [RGB LED]     │
+               │  ))) ultrasonic  │
+               └──────────────────┘
+                ▲   ▲          ▲   ▲
+               IR1  IR2       IR3  IR4
+           ── infrared line sensors (4×) ──
+```
+
 ## Repository layout
 
 ```
