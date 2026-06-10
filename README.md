@@ -58,6 +58,16 @@ Pin assignments (BCM): LEFT_GO=20, LEFT_BACK=21, LEFT_PWM=16, RIGHT_GO=19, RIGHT
 ### `test_motors.py`
 Smoke test for `motors.py`: drives forward 2 s, brakes, turns left 1 s, turns right 1 s, then cleans up. Handles `SIGINT` for safe Ctrl-C exit.
 
+### `ai_driver.py`
+Thin client for an instructor-hosted [Ollama](https://ollama.com) server running `phi3:mini`. Provides two functions used in the AI decision labs:
+
+| Function | Description |
+|---|---|
+| `ask(prompt)` | POST a raw prompt to the Ollama `/api/generate` endpoint and return the response text |
+| `decide(observation)` | Wraps `ask` with a robot-brain system prompt; given a natural-language observation, returns one of `FORWARD`, `LEFT`, `RIGHT`, or `STOP` |
+
+Configure `OLLAMA_HOST` at the top of the file to the IP address provided by the instructor before use.
+
 ### `01_hardware/` notebooks
 Guided Jupyter labs covering:
 - `01_led_control.ipynb` — GPIO LED control
@@ -66,6 +76,8 @@ Guided Jupyter labs covering:
 
 ### `02_vision/` notebooks
 - `04_camera_basics.ipynb` — Introduction to camera perception for ADAS. Covers opening a camera with OpenCV, inspecting individual pixel BGR values, streaming a live feed with an FPS counter, and comparing color spaces (BGR, HSV, grayscale). Includes guided "Tweak Zone" experiments and an advanced challenge to locate the brightest pixel in a frame.
+- `05_color_detection.ipynb` — HSV-based color detection. Students define per-color lower/upper HSV bounds, build a binary mask via `cv2.inRange`, extract contours to find the largest matching blob, and overlay a detection circle with live X/Y readout. Includes a live threaded feed and an advanced challenge to write an adaptive calibration function.
+- `06_color_following.ipynb` — Closes the full perception → decision → action loop. Combines the color detector from Notebook 05 with `motors.py` to drive the tank toward a colored target in real time. A configurable dead zone prevents overcorrection; the advanced challenge asks students to implement proportional (P) control so turn speed scales with distance from center.
 
 ---
 
