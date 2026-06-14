@@ -1,12 +1,18 @@
 import requests
 import json
+import os
 
 # ═══════════════════════════════════════
 #   SET THIS TO INSTRUCTOR PROVIDED IP
-OLLAMA_HOST = "192.168.4.xx"   # change to instructor provided IP
+OLLAMA_HOST = os.environ.get('OLLAMA_HOST', '192.168.4.30')   # change to instructor provided IP
 OLLAMA_PORT = 11434
 MODEL       = "phi3:mini"
 # ═══════════════════════════════════════
+
+DEFAULT_SYSTEM_PROMPT = """You are the AI brain of a small robot car following a colored target.
+Respond with ONLY one word: FORWARD, LEFT, RIGHT, or STOP.
+No explanation. No punctuation. Just the single word."""
+
 
 def ask(prompt, host=OLLAMA_HOST):
     """Send a prompt to Ollama and return the response text."""
@@ -18,19 +24,18 @@ def ask(prompt, host=OLLAMA_HOST):
                 "prompt": prompt,
                 "stream": False
             },
-            timeout=10
+            timeout=30
         )
         return response.json()["response"]
     except Exception as e:
         return f"ERROR: Could not reach AI server -- {str(e)}"
 
-def decide(observation):
-    """Given an observation about what the robot sees, get a driving decision."""
-    prompt = f"""You are the AI brain of a small robot car in a classroom.
-    
-The robot's camera reports: {observation}
-
-Respond with ONLY one of these exact words: FORWARD, LEFT, RIGHT, STOP
-No explanation, just the single word decision."""
-    
-    return ask(prompt).strip().upper 
+def decide(observation, system_prompt=DEFAULT_SYSTEM_PROMPT):
+    """Given an observation, get a driving decision."""
+    prompt = f"{system_prompt}\n\nObservation: {observation}"
+    response = ask(prompt).strip().upper()
+    # extract first valid command in case model ignores constraints
+    for word in response.split():
+        if word in ['FORWARD', 'LEFT', 'RIGHT', 'STOP']:
+            return word
+    return 'STOP'  # safe default
