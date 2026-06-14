@@ -29,6 +29,7 @@ This repo is intended to be used alongside the Yahboom-provided Raspberry Pi ima
 
 ```
 lab/              Python motor library and lab notebooks
+  00_concepts/    Conceptual intro to ADAS/AD
   01_hardware/    GPIO, motors, and pan-tilt labs
   02_vision/      Camera and computer-vision labs
 mypython/         Standalone Python scripts for hardware testing
@@ -67,6 +68,9 @@ Thin client for an instructor-hosted [Ollama](https://ollama.com) server running
 | `decide(observation)` | Wraps `ask` with a robot-brain system prompt; given a natural-language observation, returns one of `FORWARD`, `LEFT`, `RIGHT`, or `STOP` |
 
 Configure `OLLAMA_HOST` at the top of the file to the IP address provided by the instructor before use.
+
+### `00_concepts/` notebooks
+- `00_what_is_adas.ipynb` — Conceptual introduction to Advanced Driver-Assistance Systems (ADAS) and autonomous driving. Covers the sensor stack (cameras, radar, lidar, ultrasonic), the perception → decision → action pipeline, and how the camp's Yahboom G1 Tank maps onto real-world ADAS architectures.
 
 ### `01_hardware/` notebooks
 Guided Jupyter labs covering:
