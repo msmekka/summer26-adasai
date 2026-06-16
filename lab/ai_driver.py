@@ -4,7 +4,7 @@ import os
 
 # ═══════════════════════════════════════
 #   SET THIS TO INSTRUCTOR PROVIDED IP
-OLLAMA_HOST = os.environ.get('OLLAMA_HOST', '192.168.4.30')   # change to instructor provided IP
+OLLAMA_HOST = os.environ.get('OLLAMA_HOST', '192.168.128.207')   # change to instructor provided IP
 OLLAMA_PORT = 11434
 MODEL       = "phi3:mini"
 # ═══════════════════════════════════════
