@@ -2,7 +2,7 @@
 
 Teaching AI for ADAS/AD using the Yahboom G1 Tank on a Raspberry Pi.
 
-This repo is intended to be used alongside the Yahboom-provided Raspberry Pi image and software. See the official Yahboom G1 Tank resource page for the image, original software, and documentation: https://www.yahboom.net/study/G1-T-PI
+This repo is intended to be used alongside the Yahboom-provided Raspberry Pi image and software. See the official Yahboom G1 Tank resource page for the image, original software, and documentation: [...]
 
 ```
               ┌──────[camera]──────┐
@@ -70,7 +70,7 @@ Thin client for an instructor-hosted [Ollama](https://ollama.com) server running
 Configure `OLLAMA_HOST` at the top of the file to the IP address provided by the instructor before use.
 
 ### `00_concepts/` notebooks
-- `00_what_is_adas.ipynb` — Conceptual introduction to Advanced Driver-Assistance Systems (ADAS) and autonomous driving. Covers the sensor stack (cameras, radar, lidar, ultrasonic), the perception → decision → action pipeline, and how the camp's Yahboom G1 Tank maps onto real-world ADAS architectures.
+- `00_what_is_adas.ipynb` — Conceptual introduction to Advanced Driver-Assistance Systems (ADAS) and autonomous driving. Covers the sensor stack (cameras, radar, lidar, ultrasonic), the percepti[...]
 
 ### `01_hardware/` notebooks
 Guided Jupyter labs covering:
@@ -79,9 +79,9 @@ Guided Jupyter labs covering:
 - `03_pantilt_control.ipynb` — Pan-tilt servo control
 
 ### `02_vision/` notebooks
-- `04_camera_basics.ipynb` — Introduction to camera perception for ADAS. Covers opening a camera with OpenCV, inspecting individual pixel BGR values, streaming a live feed with an FPS counter, and comparing color spaces (BGR, HSV, grayscale). Includes guided "Tweak Zone" experiments and an advanced challenge to locate the brightest pixel in a frame.
-- `05_color_detection.ipynb` — HSV-based color detection. Students define per-color lower/upper HSV bounds, build a binary mask via `cv2.inRange`, extract contours to find the largest matching blob, and overlay a detection circle with live X/Y readout. Includes a live threaded feed and an advanced challenge to write an adaptive calibration function.
-- `06_color_following.ipynb` — Closes the full perception → decision → action loop. Combines the color detector from Notebook 05 with `motors.py` to drive the tank toward a colored target in real time. A configurable dead zone prevents overcorrection; the advanced challenge asks students to implement proportional (P) control so turn speed scales with distance from center.
+- `04_camera_basics.ipynb` — Introduction to camera perception for ADAS. Covers opening a camera with OpenCV, inspecting individual pixel BGR values, streaming a live feed with an FPS counter, a[...]
+- `05_color_detection.ipynb` — HSV-based color detection. Students define per-color lower/upper HSV bounds, build a binary mask via `cv2.inRange`, extract contours to find the largest matching b[...]
+- `06_color_following.ipynb` — Closes the full perception → decision → action loop. Combines the color detector from Notebook 05 with `motors.py` to drive the tank toward a colored target in[...]
 
 ---
 
@@ -90,7 +90,7 @@ Guided Jupyter labs covering:
 > Adapted from Yahboom's original G1 Tank software and tweaked for the camp curriculum.
 
 ### `pantilt_test.py`
-Sweeps the pan-tilt camera mount through a sequence (center → left → right → center → up → down → center) using 50 Hz PWM on BCM pins 11 (vertical) and 9 (horizontal). Handles `SIGINT`/`SIGTERM` for clean shutdown.
+Sweeps the pan-tilt camera mount through a sequence (center → left → right → center → up → down → center) using 50 Hz PWM on BCM pins 11 (vertical) and 9 (horizontal). Handles `SIGINT`[...]
 
 ---
 
@@ -113,24 +113,43 @@ All programs use `wiringPi` pin numbering and `softPwm` for motor speed control.
 | `bluetooth_control_tank.c` | Full-featured Bluetooth (serial) control: drive, servos, RGB LED, line-follow mode, obstacle-avoidance mode, LED color mode |
 | `TCP_control_Route.c` | Same feature set as Bluetooth control but over a TCP socket (port 8888, IP 192.168.50.1) using pthreads for concurrent recv/send/servo threads |
 
-### Pin map (wiringPi numbering)
+### Raspberry Pi 4B GPIO Pin Map
 
-| Signal | wiringPi pin |
-|---|---|
-| Left motor forward (AIN2) | 28 |
-| Left motor reverse (AIN1) | 29 |
-| Left motor PWM | 27 |
-| Right motor forward (BIN2) | 24 |
-| Right motor reverse (BIN1) | 25 |
-| Right motor PWM | 23 |
-| Ultrasonic Trig | 31 |
-| Ultrasonic Echo | 30 |
-| Track sensors (L1, L2, R1, R2) | 9, 21, 7, 1 |
-| Front servo | 4 |
-| Camera pan servo | 14 |
-| Camera tilt servo | 13 |
-| RGB LED (R, G, B) | 3, 2, 5 |
-| Buzzer / button | 10 |
+```
+ +-----+-----+---------+------+---+---Pi 4B--+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ |     |     |    3.3v |      |   |  1 || 2  |   |      | 5v      |     |     |
+ |   2 |   8 |   SDA.1 |  OUT | 1 |  3 || 4  |   |      | 5v      |     |     |
+ |   3 |   9 |   SCL.1 |   IN | 1 |  5 || 6  |   |      | 0v      |     |     |
+ |   4 |   7 | GPIO. 7 |   IN | 1 |  7 || 8  | 1 | ALT0 | TxD     | 15  | 14  |
+ |     |     |      0v |      |   |  9 || 10 | 1 | ALT0 | RxD     | 16  | 15  |
+ |  17 |   0 | GPIO. 0 |   IN | 0 | 11 || 12 | 1 | IN   | GPIO. 1 | 1   | 18  |
+ |  27 |   2 | GPIO. 2 |  OUT | 0 | 13 || 14 |   |      | 0v      |     |     |
+ |  22 |   3 | GPIO. 3 |  OUT | 0 | 15 || 16 | 0 | OUT  | GPIO. 4 | 4   | 23  |
+ |     |     |    3.3v |      |   | 17 || 18 | 0 | OUT  | GPIO. 5 | 5   | 24  |
+ |  10 |  12 |    MOSI | ALT0 | 0 | 19 || 20 |   |      | 0v      |     |     |
+ |   9 |  13 |    MISO |  OUT | 0 | 21 || 22 | 0 | IN   | GPIO. 6 | 6   | 25  |
+ |  11 |  14 |    SCLK |  OUT | 0 | 23 || 24 | 1 | OUT  | CE0     | 10  | 8   |
+ |     |     |      0v |      |   | 25 || 26 | 1 | OUT  | CE1     | 11  | 7   |
+ |   0 |  30 |   SDA.0 |   IN | 0 | 27 || 28 | 0 | OUT  | SCL.0   | 31  | 1   |
+ |   5 |  21 | GPIO.21 |   IN | 1 | 29 || 30 |   |      | 0v      |     |     |
+ |   6 |  22 | GPIO.22 |   IN | 1 | 31 || 32 | 0 | IN   | GPIO.26 | 26  | 12  |
+ |  13 |  23 | GPIO.23 |  OUT | 0 | 33 || 34 |   |      | 0v      |     |     |
+ |  19 |  24 | GPIO.24 |  OUT | 0 | 35 || 36 | 0 | OUT  | GPIO.27 | 27  | 16  |
+ |  26 |  25 | GPIO.25 |  OUT | 0 | 37 || 38 | 0 | OUT  | GPIO.28 | 28  | 20  |
+ |     |     |      0v |      |   | 39 || 40 | 0 | OUT  | GPIO.29 | 29  | 21  |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+---Pi 4B--+---+------+---------+-----+-----+
+```
+
+**Legend:**
+- **BCM**: Broadcom (GPIO) pin number
+- **wPi**: wiringPi pin number
+- **Mode**: GPIO function (IN = input, OUT = output, ALT0 = alternate function)
+- **V**: Voltage state
+- **Physical**: Physical pin number on the header
 
 ## Requirements
 
