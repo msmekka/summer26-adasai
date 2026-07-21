@@ -1,7 +1,5 @@
 # Yahboom G1 Tank — Kit Assembly Tips for Helpers
 
-*STEMINIST Lab*
-
 This document is a companion to the Yahboom assembly video. Watch the video and use these tips as a reference during assembly. The tips focus on the specific gotchas discovered during the kit build — things the video does not emphasize or gets wrong.
 
 > ⚠ **Ignore the Raspberry Pi install part of the video.** The Pis are at the school and will be added later. Assemble everything else. When you're done you'll have the top assembly and the bottom assembly. Leaving them separate will make it easier to install the Pis at the school.
