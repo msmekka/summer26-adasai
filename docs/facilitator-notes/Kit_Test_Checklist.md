@@ -29,10 +29,10 @@ Before running any component tests complete these steps in order.
 
 ## Step 2: Compile SmartCar Programs
 
-Compile all C programs before running tests. Run these commands from the `ncssmSmartCar` directory.
+Compile all C programs before running tests. Run these commands from the `mySmartCar` directory.
 
 ```bash
-cd ~/ncssmSmartCar
+cd ~/mysmartcar
 gcc -o ColorLED ColorLED.c -lwiringPi -lpthread
 gcc -o CarRun CarRun.c -lwiringPi -lpthread
 gcc -o ServoControlCorlor ServoControlCorlor.c -lwiringPi -lpthread
@@ -53,7 +53,7 @@ Run each test in order. Use two SSH sessions — one to run the test, one to kil
 Safest test — no moving parts. Confirms expansion board is communicating with the Pi.
 
 ```bash
-cd ~/ncssmSmartCar
+cd ~/mysmartcar
 sudo ./ColorLED
 ```
 
@@ -125,7 +125,7 @@ Then press the KEY button on the expansion board.
 Tests both camera servos using the Python pan/tilt test script.
 
 ```bash
-sudo python3 ~/ncssmpython/pantilt_test.py
+sudo python3 ~/mypython/pantilt_test.py
 ```
 
 - [ ] Horizontal servo sweeps left and right — full range, no grinding
