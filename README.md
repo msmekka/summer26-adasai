@@ -36,6 +36,7 @@ lab/                Python motor library and lab notebooks
   04_challenges/    Capstone challenge notebooks combining CV, sensors, and AI decision-making
 mypython/           Standalone Python scripts for hardware testing
 mySmartCar/         C programs (wiringPi) from the Yahboom G1 kit
+docs/               Facilitator-facing material -- curriculum plan, facilitator notes, assembly guides, kit deployment scripts
 ```
 
 ---

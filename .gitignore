@@ -219,3 +219,6 @@ __marimo__/
 
 # macOS
 .DS_Store
+
+# Camp-specific kit inventory (real local network IPs) -- copy kits.txt.example instead
+docs/setup-scripts/kits.txt
