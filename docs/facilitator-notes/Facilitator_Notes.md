@@ -1,7 +1,5 @@
 # AI in Autonomous Driving — Facilitator Notes
 
-*NCSSM Summer 2026 | June 15-19, 2026*
-
 ## How to Read These Notes
 
 These notes are for facilitators and helpers. Each day includes session notes, notebook guidance, suggested discussion questions, video recommendations, and student-facing material you can share or display.
